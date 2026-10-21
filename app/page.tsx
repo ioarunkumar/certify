@@ -58,7 +58,7 @@ export default function Page() {
   const fitLabel = useMemo(() => `${zoom}%`, [zoom])
 
   return (
-    <main className="min-h-screen bg-[#f7f8fa] text-[#20242c]">
+    <main className="flex h-dvh min-h-0 flex-col overflow-hidden bg-[#f7f8fa] text-[#20242c]">
       <header className="flex h-[72px] items-center justify-between border-b border-[#e6e8ec] bg-white px-8 max-[760px]:h-auto max-[760px]:gap-3 max-[760px]:px-4 max-[760px]:py-3">
         <div className="flex items-center gap-9">
           <a href="#" className="flex items-center gap-2.5" aria-label="Certify home">
@@ -90,8 +90,8 @@ export default function Page() {
         </nav>
       </div>
 
-      <section className="mx-auto grid max-w-[1500px] grid-cols-[260px_minmax(500px,1fr)_286px] gap-0 px-8 py-7 max-[1100px]:grid-cols-[220px_minmax(420px,1fr)] max-[1100px]:px-5 max-[1100px]:[&>aside:last-child]:hidden max-[760px]:block max-[760px]:px-3 max-[760px]:py-4 max-[760px]:[&>aside:first-child]:mb-5 max-[760px]:[&>aside:first-child]:pr-0 max-[760px]:[&>div]:border-x-0 max-[760px]:[&>div]:px-0">
-        <aside className="pr-7">
+      <section className="mx-auto min-h-0 flex-1 grid w-full max-w-[1500px] grid-cols-[260px_minmax(500px,1fr)_286px] gap-0 overflow-hidden px-8 py-7 max-[1100px]:grid-cols-[220px_minmax(420px,1fr)] max-[1100px]:px-5 max-[1100px]:[&>aside:last-child]:hidden max-[760px]:block max-[760px]:overflow-y-auto max-[760px]:px-3 max-[760px]:py-4 max-[760px]:[&>aside:first-child]:mb-5 max-[760px]:[&>aside:first-child]:pr-0 max-[760px]:[&>div]:border-x-0 max-[760px]:[&>div]:px-0">
+        <aside className="min-h-0 overflow-y-auto pr-7">
           <div className="mb-6"><p className="mb-1 text-[11px] font-semibold uppercase tracking-[.12em] text-[#9ba2af]">Design editor</p><h1 className="text-[21px] font-semibold tracking-[-.03em]">Build your certificate</h1><p className="mt-1.5 text-[13px] leading-5 text-[#7d8593]">Position your fields and preview the final result.</p></div>
           <div className="flex flex-col gap-2">
             <button onClick={() => setSelectedLayer('name')} className={`group flex items-center gap-3 rounded-xl border p-3 text-left transition-all ${selectedLayer === 'name' ? 'border-[#b8c9fa] bg-[#f2f6ff] shadow-[0_2px_6px_rgba(40,85,217,.06)]' : 'border-transparent bg-white hover:border-[#e2e5eb]'}`}><GripVertical size={15} className="text-[#b8bec8]" /><span className="flex size-8 items-center justify-center rounded-lg bg-[#dfe8ff] text-[#2855d9]"><Type size={16} /></span><span className="flex-1"><span className="block text-[13px] font-semibold">Recipient name</span><span className="block text-[11px] text-[#89919e]">Name column</span></span><button className="text-[#9aa1ae]" aria-label="Lock name field"><Lock size={13} /></button></button>
@@ -103,7 +103,7 @@ export default function Page() {
           <div className="mt-8 rounded-xl border border-[#e2e6ec] bg-white p-3.5"><div className="flex items-start gap-2.5"><Info size={15} className="mt-0.5 shrink-0 text-[#2855d9]" /><p className="text-[11px] leading-[1.55] text-[#707987]">Fields use relative positions, so your layout stays crisp at every size.</p></div></div>
         </aside>
 
-        <div className="min-w-0 border-x border-[#e3e6eb] px-7">
+        <div className="min-h-0 min-w-0 overflow-hidden border-x border-[#e3e6eb] px-7">
           <div className="mb-4 flex items-center justify-between"><div className="flex items-center gap-2 text-[12px] text-[#7e8694]"><FileImage size={15} /><span>completion-certificate.png</span><span className="rounded bg-[#edf0f4] px-1.5 py-0.5 text-[10px]">A4 landscape</span></div><div className="flex items-center gap-1"><button className="flex size-8 items-center justify-center rounded-md text-[#7a8290] hover:bg-white" aria-label="Undo"><RotateCcw size={15} /></button><button className="flex size-8 items-center justify-center rounded-md text-[#b5bac4]" aria-label="Redo"><RotateCcw size={15} className="-scale-x-100" /></button><div className="mx-2 h-5 w-px bg-[#e2e5ea]" /><button onClick={() => setZoom(Math.max(40, zoom - 10))} className="flex size-8 items-center justify-center rounded-md text-[#7a8290] hover:bg-white" aria-label="Zoom out"><ZoomOut size={15} /></button><span className="w-10 text-center text-[11px] font-medium text-[#646d7b]">{fitLabel}</span><button onClick={() => setZoom(Math.min(110, zoom + 10))} className="flex size-8 items-center justify-center rounded-md text-[#7a8290] hover:bg-white" aria-label="Zoom in"><ZoomIn size={15} /></button><button onClick={() => setZoom(76)} className="ml-1 rounded-md px-2 py-1 text-[11px] font-medium text-[#2855d9] hover:bg-[#edf2ff]">Fit</button></div></div>
           <div className="flex min-h-[600px] items-center justify-center rounded-xl bg-[#eef0f3] p-7" style={{ backgroundImage: 'radial-gradient(#d9dde4 1px, transparent 1px)', backgroundSize: '16px 16px' }}>
             <div className="relative aspect-[1.414/1] w-[min(100%,780px)] overflow-hidden bg-[#fcfaf4] shadow-[0_18px_40px_rgba(33,40,55,.15)] transition-all" style={{ transform: `scale(${zoom / 76})` }}>
