@@ -59,7 +59,7 @@ export default function Page() {
 
   return (
     <main className="flex h-dvh min-h-0 flex-col overflow-hidden bg-[#f7f8fa] text-[#20242c]">
-      <header className="flex h-[72px] items-center justify-between border-b border-[#e6e8ec] bg-white px-8 max-[760px]:h-auto max-[760px]:gap-3 max-[760px]:px-4 max-[760px]:py-3">
+      <header className="flex h-[58px] items-center justify-between border-b border-[#e6e8ec] bg-white px-8 max-[760px]:h-auto max-[760px]:gap-3 max-[760px]:px-4 max-[760px]:py-3">
         <div className="flex items-center gap-9">
           <a href="#" className="flex items-center gap-2.5" aria-label="Certify home">
             <span className="flex size-9 items-center justify-center rounded-[10px] bg-[#2855d9] text-white shadow-[0_5px_12px_rgba(40,85,217,.2)]"><Sparkles size={18} /></span>
@@ -76,7 +76,7 @@ export default function Page() {
         </div>
       </header>
 
-      <div className="border-b border-[#e6e8ec] bg-white px-8">
+      <div className="h-[52px] shrink-0 border-b border-[#e6e8ec] bg-white px-8">
         <nav className="mx-auto flex max-w-[1500px] items-center justify-between" aria-label="Certificate workflow">
           <div className="flex items-center gap-1">
             {steps.map((step, index) => {
@@ -90,7 +90,7 @@ export default function Page() {
         </nav>
       </div>
 
-      <section className="mx-auto min-h-0 flex-1 grid w-full max-w-[1500px] grid-cols-[260px_minmax(500px,1fr)_286px] gap-0 overflow-hidden px-8 py-7 max-[1100px]:grid-cols-[220px_minmax(420px,1fr)] max-[1100px]:px-5 max-[1100px]:[&>aside:last-child]:hidden max-[760px]:block max-[760px]:overflow-y-auto max-[760px]:px-3 max-[760px]:py-4 max-[760px]:[&>aside:first-child]:mb-5 max-[760px]:[&>aside:first-child]:pr-0 max-[760px]:[&>div]:border-x-0 max-[760px]:[&>div]:px-0">
+      <section className="mx-auto min-h-0 flex-1 grid w-full max-w-[1500px] grid-cols-[260px_minmax(500px,1fr)_286px] gap-0 overflow-hidden px-8 py-4 max-[1100px]:grid-cols-[220px_minmax(420px,1fr)] max-[1100px]:px-5 max-[1100px]:[&>aside:last-child]:hidden max-[760px]:block max-[760px]:overflow-y-auto max-[760px]:px-3 max-[760px]:py-4 max-[760px]:[&>aside:first-child]:mb-5 max-[760px]:[&>aside:first-child]:pr-0 max-[760px]:[&>div]:border-x-0 max-[760px]:[&>div]:px-0">
         <aside className="min-h-0 overflow-y-auto pr-7">
           <div className="mb-6"><p className="mb-1 text-[11px] font-semibold uppercase tracking-[.12em] text-[#9ba2af]">Design editor</p><h1 className="text-[21px] font-semibold tracking-[-.03em]">Build your certificate</h1><p className="mt-1.5 text-[13px] leading-5 text-[#7d8593]">Position your fields and preview the final result.</p></div>
           <div className="flex flex-col gap-2">
@@ -103,10 +103,10 @@ export default function Page() {
           <div className="mt-8 rounded-xl border border-[#e2e6ec] bg-white p-3.5"><div className="flex items-start gap-2.5"><Info size={15} className="mt-0.5 shrink-0 text-[#2855d9]" /><p className="text-[11px] leading-[1.55] text-[#707987]">Fields use relative positions, so your layout stays crisp at every size.</p></div></div>
         </aside>
 
-        <div className="min-h-0 min-w-0 overflow-hidden border-x border-[#e3e6eb] px-7">
+        <div className="flex min-h-0 min-w-0 flex-col overflow-hidden border-x border-[#e3e6eb] px-7">
           <div className="mb-4 flex items-center justify-between"><div className="flex items-center gap-2 text-[12px] text-[#7e8694]"><FileImage size={15} /><span>completion-certificate.png</span><span className="rounded bg-[#edf0f4] px-1.5 py-0.5 text-[10px]">A4 landscape</span></div><div className="flex items-center gap-1"><button className="flex size-8 items-center justify-center rounded-md text-[#7a8290] hover:bg-white" aria-label="Undo"><RotateCcw size={15} /></button><button className="flex size-8 items-center justify-center rounded-md text-[#b5bac4]" aria-label="Redo"><RotateCcw size={15} className="-scale-x-100" /></button><div className="mx-2 h-5 w-px bg-[#e2e5ea]" /><button onClick={() => setZoom(Math.max(40, zoom - 10))} className="flex size-8 items-center justify-center rounded-md text-[#7a8290] hover:bg-white" aria-label="Zoom out"><ZoomOut size={15} /></button><span className="w-10 text-center text-[11px] font-medium text-[#646d7b]">{fitLabel}</span><button onClick={() => setZoom(Math.min(110, zoom + 10))} className="flex size-8 items-center justify-center rounded-md text-[#7a8290] hover:bg-white" aria-label="Zoom in"><ZoomIn size={15} /></button><button onClick={() => setZoom(76)} className="ml-1 rounded-md px-2 py-1 text-[11px] font-medium text-[#2855d9] hover:bg-[#edf2ff]">Fit</button></div></div>
-          <div className="flex min-h-[600px] items-center justify-center rounded-xl bg-[#eef0f3] p-7" style={{ backgroundImage: 'radial-gradient(#d9dde4 1px, transparent 1px)', backgroundSize: '16px 16px' }}>
-            <div className="relative aspect-[1.414/1] w-[min(100%,780px)] overflow-hidden bg-[#fcfaf4] shadow-[0_18px_40px_rgba(33,40,55,.15)] transition-all" style={{ transform: `scale(${zoom / 76})` }}>
+          <div className="flex h-[calc(100dvh-245px)] min-h-0 flex-none items-center justify-center overflow-hidden rounded-xl bg-[#eef0f3] p-5 max-[760px]:h-auto max-[760px]:min-h-[360px]" style={{ backgroundImage: 'radial-gradient(#d9dde4 1px, transparent 1px)', backgroundSize: '16px 16px' }}>
+            <div className="relative aspect-[1.414/1] h-[calc(100dvh-260px)] max-h-full w-auto max-w-full overflow-hidden bg-[#fcfaf4] max-[760px]:h-auto max-[760px]:w-full shadow-[0_18px_40px_rgba(33,40,55,.15)] transition-all" style={{ transform: `scale(${zoom / 76})` }}>
               <div className="absolute inset-[3.2%] border border-[#c89f54]/50" /><div className="absolute inset-[5.5%] border border-[#dfc17f]/45" />
               <div className="absolute left-[10%] top-[9%] text-[8px] font-semibold uppercase tracking-[.28em] text-[#a77e39]">SUMMER LEARNING SERIES</div><div className="absolute left-[10%] top-[19%] font-serif text-[clamp(25px,4vw,54px)] leading-none text-[#29364b]">Certificate</div><div className="absolute left-[10%] top-[31%] font-serif text-[clamp(12px,1.7vw,21px)] italic text-[#a77e39]">of participation</div>
               <div className={`absolute left-[10%] top-[48%] flex h-[17%] w-[80%] items-center justify-center rounded-sm border border-dashed transition-colors ${selectedLayer === 'name' ? 'border-[#2855d9] bg-[#eaf0ff]/20' : 'border-transparent'}`} onClick={() => setSelectedLayer('name')}><span className="font-serif text-[clamp(19px,3vw,40px)] font-bold tracking-wide text-[#25344d]">{recipient.name}</span>{selectedLayer === 'name' && <><span className="absolute -left-1 -top-1 size-2 rounded-full bg-[#2855d9]" /><span className="absolute -right-1 -top-1 size-2 rounded-full bg-[#2855d9]" /><span className="absolute -bottom-1 -left-1 size-2 rounded-full bg-[#2855d9]" /><span className="absolute -bottom-1 -right-1 size-2 rounded-full bg-[#2855d9]" /><span className="absolute -top-6 left-1/2 -translate-x-1/2 rounded bg-[#2855d9] px-1.5 py-0.5 text-[9px] font-medium text-white">Recipient name</span></>}</div>
