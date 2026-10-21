@@ -10,7 +10,7 @@ import { Download, FileImage, FileText, ImagePlus, Move, Plus, Save, Sparkles, U
 pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/legacy/build/pdf.worker.min.mjs', import.meta.url).toString()
 
 type Recipient = { name: string }
-type NameFont = 'Cinzel' | 'Georgia' | 'Arial'
+type NameFont = 'Cinzel' | 'Great Vibes' | 'Georgia' | 'Arial'
 
 const starterRecipients: Recipient[] = [
   { name: 'Amara Okafor' },
@@ -23,22 +23,28 @@ function safeName(name: string) {
   return name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'recipient'
 }
 
-function certificateSvg(name: string, signature: boolean, image: string | null, position: { x: number; y: number }, templateImage: string | null = null, namePosition = { x: 707, y: 620 }, nameFont: NameFont = 'Cinzel', nameSize = 58) {
+function getNameFontWeight(isBold: boolean) {
+  return isBold ? 700 : 400
+}
+
+function certificateSvg(name: string, signature: boolean, image: string | null, position: { x: number; y: number }, templateImage: string | null = null, namePosition = { x: 707, y: 620 }, nameFont: NameFont = 'Cinzel', nameSize = 58, isBold = true) {
   const escaped = name.replace(/[<&>]/g, (char) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' })[char] ?? char)
+  const fontWeight = getNameFontWeight(isBold)
   const imageMarkup = image ? `<image data-draggable="image" href="${image}" x="${position.x - 70}" y="${position.y - 70}" width="140" height="140" preserveAspectRatio="xMidYMid slice" style="cursor:move"/>` : ''
   const background = templateImage
     ? `<image href="${templateImage}" x="0" y="0" width="1414" height="1000" preserveAspectRatio="none"/>`
     : '<rect width="1414" height="1000" fill="#fcfaf4"/><rect x="45" y="32" width="1324" height="936" fill="none" stroke="#c89f54"/><rect x="72" y="55" width="1270" height="890" fill="none" stroke="#dfc17f"/><text x="141" y="150" font-family="Arial" font-size="22" letter-spacing="8" fill="#a77e39">SUMMER LEARNING SERIES</text><text x="141" y="360" font-family="Georgia" font-size="80" fill="#29364b">Certificate</text><text x="141" y="430" font-family="Georgia" font-size="34" font-style="italic" fill="#a77e39">of participation</text><text x="141" y="750" font-family="Arial" font-size="20" fill="#667184">for completing the Summer Workshop 2026</text><circle cx="210" cy="835" r="42" fill="none" stroke="#d1aa61"/><text x="210" y="832" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="#b1843e">2026</text><text x="210" y="847" text-anchor="middle" font-family="Arial" font-size="8" fill="#b1843e">CERTIFIED</text>'
-  const nameMarkup = name ? `<text data-draggable="name" x="${namePosition.x}" y="${namePosition.y}" text-anchor="middle" font-family="${nameFont}" font-size="${nameSize}" font-weight="700" fill="#25344d" style="cursor:move">${escaped}</text>` : ''
+  const nameMarkup = name ? `<text data-draggable="name" x="${namePosition.x}" y="${namePosition.y}" text-anchor="middle" font-family="${nameFont}" font-size="${nameSize}" font-weight="${fontWeight}" fill="#25344d" style="cursor:move">${escaped}</text>` : ''
   const signatureMarkup = signature && !templateImage
     ? '<text x="1120" y="820" text-anchor="middle" font-family="Georgia" font-size="34" font-style="italic" fill="#59657a">A. Rivera</text><text x="1120" y="850" text-anchor="middle" font-family="Arial" font-size="13" letter-spacing="3" fill="#8b94a2">PROGRAM DIRECTOR</text>'
     : ''
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1414 1000" width="100%" height="100%">${background}${nameMarkup}${imageMarkup}${signatureMarkup}</svg>`
 }
 
-async function svgToPdf(svg: string, name: string, namePosition: { x: number; y: number }, nameFont: NameFont, nameSize: number) {
+async function svgToPdf(svg: string, name: string, namePosition: { x: number; y: number }, nameFont: NameFont, nameSize: number, isBold: boolean) {
   const pdf = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' })
-  await document.fonts.load(`700 ${nameSize}px "${nameFont}"`)
+  const fontWeight = getNameFontWeight(isBold)
+  await document.fonts.load(`${fontWeight} ${nameSize}px "${nameFont}"`)
   const encoded = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
   const image = new Image()
   image.src = encoded
@@ -49,7 +55,7 @@ async function svgToPdf(svg: string, name: string, namePosition: { x: number; y:
   const context = canvas.getContext('2d')
   if (!context) throw new Error('Unable to render certificate preview')
   context.drawImage(image, 0, 0, canvas.width, canvas.height)
-  context.font = `700 ${nameSize}px "${nameFont}"`
+  context.font = `${fontWeight} ${nameSize}px "${nameFont}"`
   context.textAlign = 'center'
   context.textBaseline = 'alphabetic'
   context.fillStyle = '#25344d'
@@ -58,17 +64,18 @@ async function svgToPdf(svg: string, name: string, namePosition: { x: number; y:
   return new Uint8Array(pdf.output('arraybuffer'))
 }
 
-async function certificatePdf(template: ArrayBuffer | null, name: string, signature: boolean, namePosition: { x: number; y: number }, nameFont: NameFont, nameSize: number) {
-  if (!template) return svgToPdf(certificateSvg('', signature, null, { x: 1180, y: 690 }, null, namePosition, nameFont, nameSize), name, namePosition, nameFont, nameSize)
+async function certificatePdf(template: ArrayBuffer | null, name: string, signature: boolean, namePosition: { x: number; y: number }, nameFont: NameFont, nameSize: number, isBold: boolean) {
+  if (!template) return svgToPdf(certificateSvg('', signature, null, { x: 1180, y: 690 }, null, namePosition, nameFont, nameSize, isBold), name, namePosition, nameFont, nameSize, isBold)
   const pdf = await PDFDocument.load(template.slice(0))
   const page = pdf.getPages()[0]
-  await document.fonts.load(`700 ${nameSize}px "${nameFont}"`)
+  const fontWeight = getNameFontWeight(isBold)
+  await document.fonts.load(`${fontWeight} ${nameSize}px "${nameFont}"`)
   const canvas = window.document.createElement('canvas')
   canvas.width = 1414
   canvas.height = 1000
   const context = canvas.getContext('2d')
   if (!context) throw new Error('Unable to render certificate name')
-  context.font = `700 ${nameSize}px "${nameFont}"`
+  context.font = `${fontWeight} ${nameSize}px "${nameFont}"`
   context.textAlign = 'center'
   context.textBaseline = 'alphabetic'
   context.fillStyle = '#25344d'
@@ -91,20 +98,22 @@ export default function Page() {
   const [namePosition, setNamePosition] = useState({ x: 707, y: 620 })
   const [nameFont, setNameFont] = useState<NameFont>('Cinzel')
   const [nameSize, setNameSize] = useState(58)
+  const [isBold, setIsBold] = useState(true)
   const [activeDrag, setActiveDrag] = useState<'name' | 'image' | null>(null)
   const [zoom, setZoom] = useState(76)
   const [saved, setSaved] = useState(true)
   const csvInput = useRef<HTMLInputElement>(null)
   const imageInput = useRef<HTMLInputElement>(null)
   const recipient = recipients[selected] ?? { name: '' }
-  const svg = useMemo(() => certificateSvg(recipient.name, signature, uploadedImage, imagePosition, certificatePreview, namePosition, nameFont, nameSize), [recipient.name, signature, uploadedImage, imagePosition, certificatePreview, namePosition, nameFont, nameSize])
+  const svg = useMemo(() => certificateSvg(recipient.name, signature, uploadedImage, imagePosition, certificatePreview, namePosition, nameFont, nameSize, isBold), [recipient.name, signature, uploadedImage, imagePosition, certificatePreview, namePosition, nameFont, nameSize, isBold])
 
   function parseCsv(file: File) {
     const reader = new FileReader()
     reader.onload = () => {
-      const rows = String(reader.result ?? '').split(/\r?\n/).map((row) => row.split(',')[0].trim().replace(/^"|"$/g, '')).filter(Boolean)
+      const rows = String(reader.result ?? '').split(/\r?\n/).map((row) => row.split(',')[0].trim().replace(/^"|"$/g, '').replace(/\s+/g, ' ')).filter(Boolean)
       const names = rows[0]?.toLowerCase() === 'name' ? rows.slice(1) : rows
-      if (names.length) { setRecipients(names.map((name) => ({ name }))); setSelected(0); setCsvName(file.name); setSaved(false) }
+      const uniqueNames = [...new Map(names.map((name) => [name.toLowerCase(), name])).values()]
+      if (uniqueNames.length) { setRecipients(uniqueNames.map((name) => ({ name }))); setSelected(0); setCsvName(file.name); setSaved(false) }
     }
     reader.readAsText(file)
   }
@@ -161,7 +170,7 @@ export default function Page() {
 
   async function downloadZip() {
     const files: Record<string, Uint8Array> = {}
-    for (const [index, item] of recipients.entries()) files[`certificate-${index + 1}-${safeName(item.name)}.pdf`] = await certificatePdf(certificateTemplate, item.name, signature, namePosition, nameFont, nameSize)
+    for (const [index, item] of recipients.entries()) files[`certificate-${index + 1}-${safeName(item.name)}.pdf`] = await certificatePdf(certificateTemplate, item.name, signature, namePosition, nameFont, nameSize, isBold)
     const blob = new Blob([zipSync(files, { level: 6 })], { type: 'application/zip' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -185,14 +194,13 @@ export default function Page() {
           <label className="text-sm">Recipient name<input value={recipient.name} onChange={(event) => { const next = [...recipients]; next[selected] = { name: event.target.value }; setRecipients(next); setSaved(false) }} className="mt-2 h-10 w-full rounded-lg border px-3" /></label>
           <div className="flex flex-col gap-3 border-t pt-4">
             <h3 className="text-sm font-semibold">Edit In</h3>
-            <label htmlFor="name-font" className="text-sm">Font<select id="name-font" value={nameFont} onChange={(event) => { setNameFont(event.target.value as NameFont); setSaved(false) }} className="mt-2 h-10 w-full rounded-lg border bg-white px-3"><option value="Cinzel">Cinzel (closest match)</option><option value="Georgia">Georgia</option><option value="Arial">Arial</option></select></label>
+            <label htmlFor="name-font" className="text-sm">Font<select id="name-font" value={nameFont} onChange={(event) => { setNameFont(event.target.value as NameFont); setSaved(false) }} className="mt-2 h-10 w-full rounded-lg border bg-white px-3"><option value="Cinzel">Cinzel (closest match)</option><option value="Great Vibes">Great Vibes</option><option value="Georgia">Georgia</option><option value="Arial">Arial</option></select></label>
             <label htmlFor="name-size" className="text-sm">Size<input id="name-size" type="number" min={12} max={120} step={1} value={nameSize} onChange={(event) => { setNameSize(Math.min(120, Math.max(12, Number(event.target.value) || 12))); setSaved(false) }} className="mt-2 h-10 w-full rounded-lg border px-3" /></label>
-            <p className="text-xs text-[#7d8593]">Name is centered. Drag it on the certificate to reposition.</p>
-            <button onClick={() => { setNamePosition({ x: 707, y: 620 }); setSaved(false) }} className="rounded-lg border px-3 py-2 text-sm">Center name</button>
+            <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={isBold} onChange={(event) => { setIsBold(event.target.checked); setSaved(false) }} />Bold</label>
           </div>
-          <label className="text-sm">Certificate image<div className="mt-2 flex items-center gap-2 text-xs text-[#7d8593]"><Move size={14} />{uploadedImage ? 'Drag image on preview to reposition' : 'No image uploaded'}</div></label>
+          {uploadedImage && <label className="text-sm">Certificate image<div className="mt-2 flex items-center gap-2 text-xs text-[#7d8593]"><Move size={14} />Drag image on preview to reposition</div></label>}
           {!certificateTemplate && <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={signature} onChange={(event) => { setSignature(event.target.checked); setSaved(false) }} />Show signature</label>}
-          <button onClick={() => setImagePosition({ x: 1180, y: 690 })} className="rounded-lg border px-3 py-2 text-sm">Reset image position</button>
+          {uploadedImage && <button onClick={() => { setImagePosition({ x: 1180, y: 690 }); setSaved(false) }} className="rounded-lg border px-3 py-2 text-sm">Reset image position</button>}
         </div>
       </aside>
     </div>

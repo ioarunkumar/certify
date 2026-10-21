@@ -3,6 +3,14 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
+@font-face {
+  font-family: 'Great Vibes';
+  src: url('/fonts/GreatVibes-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
