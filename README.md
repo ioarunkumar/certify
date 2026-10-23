@@ -26,62 +26,46 @@ Upload a PDF template, import names from a CSV, style and place the text, and ex
 ## ✨ Features
 
 <table>
-  <tr>
-    <td width="50%" valign="top">
-
-### 📄 Bring Your Own Template
-Use any existing PDF as the certificate background. No template? The built-in sample design is ready to go.
-
-    </td>
-    <td width="50%" valign="top">
-
-### 📥 Smart CSV Import
-Load recipient names from a CSV file. Duplicates are removed automatically, ignoring case.
-
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-
-### 👥 Recipient Management
-Add, edit, select, and delete recipients without leaving the editor.
-
-    </td>
-    <td width="50%" valign="top">
-
-### 👀 Live Preview
-Every change appears instantly on the certificate preview.
-
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-
-### 🎨 Full Text Control
-Adjust the name's font, size, bold styling, color, position, and rotation.
-
-    </td>
-    <td width="50%" valign="top">
-
-### ✍️ Signature & Images
-Upload an image or signature and drag it into place on the preview.
-
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-
-### 📦 Batch Export
-Generate one PDF per recipient and download them all in a single ZIP archive.
-
-    </td>
-    <td width="50%" valign="top">
-
-### 🔒 Browser-Side Processing
-Certificates are generated in the client with JavaScript PDF libraries.
-
-    </td>
-  </tr>
+<tr>
+<td width="50%" valign="top">
+<h3>📄 Bring Your Own Template</h3>
+<p>Use any existing PDF as the certificate background. No template? The built-in sample design is ready to go.</p>
+</td>
+<td width="50%" valign="top">
+<h3>📥 Smart CSV Import</h3>
+<p>Load recipient names from a CSV file. Duplicates are removed automatically, ignoring case.</p>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<h3>👥 Recipient Management</h3>
+<p>Add, edit, select, and delete recipients without leaving the editor.</p>
+</td>
+<td width="50%" valign="top">
+<h3>👀 Live Preview</h3>
+<p>Every change appears instantly on the certificate preview.</p>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<h3>🎨 Full Text Control</h3>
+<p>Adjust the name's font, size, bold styling, color, position, and rotation.</p>
+</td>
+<td width="50%" valign="top">
+<h3>✍️ Signature &amp; Images</h3>
+<p>Upload an image or signature and drag it into place on the preview.</p>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<h3>📦 Batch Export</h3>
+<p>Generate one PDF per recipient and download them all in a single ZIP archive.</p>
+</td>
+<td width="50%" valign="top">
+<h3>🔒 Browser-Side Processing</h3>
+<p>Certificates are generated in the client with JavaScript PDF libraries.</p>
+</td>
+</tr>
 </table>
 
 ---
@@ -222,7 +206,7 @@ Found a bug or have an idea? **[Open an issue](https://github.com/ioarunkumar/ce
 
 ## 📜 License
 
-No license is currently specified in this repository. Unless a license is added, the default copyright rules apply and reuse may be restricted.
+No license is repository.
 
 ---
 
@@ -231,5 +215,7 @@ No license is currently specified in this repository. Unless a license is added,
 **Built with ❤️ by [Arun Kumar](https://github.com/ioarunkumar)**
 
 ⭐ If Certify saved you time, consider giving it a star!
+
+[🚀 Try the Live Demo](https://certifyfaster.vercel.app/)
 
 </div>
